@@ -1,0 +1,12 @@
+<header class="header">
+  <h1>{{ TitleName }}</h1>
+  <input class="new-todo" [placeholder]="Tips" (keyup.enter)="SetInputAry($event)"
+    [(ngModel)]="InputValue" autofocus [attr.data-myhint]="myhint">
+</header>
+
+<!-- <table>
+  <tr>
+    <td [colSpan]="Cols">Two Column</td>
+    <td>One Column</td>
+  </tr>
+</table> -->

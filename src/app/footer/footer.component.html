@@ -1,0 +1,18 @@
+<footer class="footer" *ngIf="ToDoAry.length">
+  <!-- This should be `0 items left` by default -->
+  <span class="todo-count" [ngStyle]="{color: IsTooMore ? 'red' : ''}"><strong>{{ ToDoAry.length }}</strong> item left</span>
+  <!-- Remove this if you don't implement routing -->
+  <ul class="filters">
+    <li>
+      <a [class.selected]="FilterAction === 'All'" (click)="ChangeFilterAction('All')">All</a>
+    </li>
+    <li>
+      <a [class.selected]="FilterAction === 'Active'" (click)="ChangeFilterAction('Active')">Active</a>
+    </li>
+    <li>
+      <a [class.selected]="FilterAction === 'Completed'" (click)="ChangeFilterAction('Completed')">Completed</a>
+    </li>
+  </ul>
+  <!-- Hidden if no completed items are left ↓ -->
+  <button class="clear-completed" (click)="ClearCompleted()">Clear completed</button>
+</footer>
