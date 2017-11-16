@@ -18,6 +18,8 @@ export class AppComponent implements OnInit  {
 
   IsAllChecked: boolean = false;
 
+  ToDoCount: Number = 0;
+
   constructor(private DataSvc:DataService){
 
   }
@@ -26,6 +28,7 @@ export class AppComponent implements OnInit  {
     this.DataSvc.GetToDoList()
         .subscribe(data => {
           this.ToDoAry = data;
+          this.ToDoCount = data.length;
         });
   }
 
@@ -45,6 +48,7 @@ export class AppComponent implements OnInit  {
         .subscribe(data => {
           // this.ToDoAry = [...this.ToDoAry, data];
           this.ToDoAry = this.ToDoAry.concat(oToDo);
+          this.ToDoCount = this.ToDoAry.length;
         });
 
     // this.ToDoAry.push(oToDo);//ToDoAry 沒參考到新的記憶體(after concat)，需要變成 this.ToDoAry = this.ToDoAry.concat($event);
@@ -75,7 +79,8 @@ export class AppComponent implements OnInit  {
     this.DataSvc.DeleteToDo(ToDoItem.id)
         .subscribe(data => {
           // console.log(data);
-          // this.ToDoAry = this.ToDoAry.filter(item => item !== ToDoItem);
+          this.ToDoAry = this.ToDoAry.filter(item => item !== ToDoItem);
+          this.ToDoCount = this.ToDoAry.length;
         });
 
     // this.ToDoAry = this.ToDoAry.filter(f => f !== ToDoItem);

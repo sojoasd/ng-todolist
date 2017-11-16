@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
   selector: 'app-title',
@@ -14,6 +14,16 @@ export class TitleComponent implements OnInit {
   myhint:string = "hello";
 
   InputValue:string = '';
+
+  ToDoCounts:Number = 0;
+
+  @Input('ToDoCounts')
+  set ToDoCount(value){
+    this.ToDoCounts = value;
+  }
+  // get ToDoCount(){
+  //   return this.ToDoCounts;
+  // }
 
   @Output()
   PassInputValue = new EventEmitter<string>();

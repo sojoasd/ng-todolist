@@ -1,5 +1,5 @@
 <header class="header">
-  <h1>{{ TitleName }}</h1>
+  <h1>{{ TitleName }} ({{ToDoCounts}})</h1>
   <input class="new-todo" [placeholder]="Tips" (keyup.enter)="SetInputAry($event)"
     [(ngModel)]="InputValue" autofocus [attr.data-myhint]="myhint">
 </header>
