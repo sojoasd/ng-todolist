@@ -1,5 +1,5 @@
 <section class="todoapp">
-  <app-title (PassInputValue)="SetInputValue($event)" [ToDoCounts]="ToDoCount"></app-title>
+  <app-title (PassInputValue)="SetInputValue($event)" #TitleDom></app-title>
   <!-- This section should be hidden by default and shown when there are todos -->
   <section class="main" *ngIf="ToDoAry.length">
     <input class="toggle-all" type="checkbox" [(ngModel)]="IsAllChecked" (ngModelChange)="ChangeAllChecked()">
@@ -9,19 +9,31 @@
       <!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
 
       <li *ngFor="let ToDoItem of ToDoAry | filter:FilterAction" [class.completed]="ToDoItem.IsCompleted">
-        <div class="view">
+        <div class="view" *ngIf="!ToDoItem.IsEidtMode">
           <input class="toggle" id="{{ ToDoItem.id }}" type="checkbox" [(ngModel)]="ToDoItem.IsCompleted" (ngModelChange)="UpdateToDoItem(ToDoItem)">
-          <label [ngStyle]="{color: ToDoItem.IsCompleted ? 'green' : 'red'}">{{ ToDoItem.Name }}</label>
+          <label [ngStyle]="{color: ToDoItem.IsCompleted ? 'green' : 'red'}" (dblclick)="EnterEditMode(ToDoItem)">{{ ToDoItem.Name | uppercase }}</label>
           <button class="destroy" (click)="DeleteToDoItem(ToDoItem)"></button>
         </div>
-        <input class="edit" value="{{ ToDoItem.id }}">
+        <div [style.display]="ToDoItem.IsEidtMode ? '' : 'none'">
+          <input id="EditModeInput{{ToDoItem.id}}" class="edit"
+                [autofocus]="ToDoItem.IsEidtMode"
+                [(ngModel)]="ToDoItem.EditText"
+                (keyup.esc)="EnterEditMode(ToDoItem)"
+                (keyup.enter)="EnterSaveEditMode(ToDoItem)">
+        </div>
+
       </li>
     </ul>
   </section>
   <!-- This footer should hidden by default and shown when there are todos -->
   <app-footer [ToDos]="ToDoAry" (TriggerClearCompletedEvent)="ClearCompletedEvent()"
-                                (TriggerFilterEvent)="ChangeFilterEvent($event)" #FooterDom></app-footer>
+                                (TriggerFilterChangeType)="ChangeFilterEvent($event)"
+                                (TriggerTestActionEvent)="TestActionFuncEvent($event)"
+                                #FooterDom></app-footer>
 </section>
+<pre>
+  {{ToDoAry | json}}
+</pre>
 <footer class="info">
   <p>Double-click to edit a todo</p>
   <!-- Remove the below line ↓ -->
@@ -34,3 +46,5 @@
 <button (click)="FooterDom.TestClear(GetCallback)">log from footer</button>
 
 <button (click)=UpdateToDoItem2()>test update</button>
+
+<button (click)="TitleDom.ClickTitle(TitleDom)">ClickTitle</button>

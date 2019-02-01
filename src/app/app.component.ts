@@ -1,3 +1,4 @@
+import { ToDoModel } from './to-do-model';
 import { DataService } from './data.service';
 import { HttpClient } from '@angular/common/http';
 import { ItoDoModel } from './ito-do-model';
@@ -10,15 +11,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit  {
 
-  ToDoAry: ItoDoModel[] = [];
+  ToDoAry: ToDoModel[] = [];
 
   Completed: string = '';
 
   FilterAction: string = 'All';
 
   IsAllChecked: boolean = false;
-
-  ToDoCount: Number = 0;
 
   constructor(private DataSvc:DataService){
 
@@ -28,27 +27,26 @@ export class AppComponent implements OnInit  {
     this.DataSvc.GetToDoList()
         .subscribe(data => {
           this.ToDoAry = data;
-          this.ToDoCount = data.length;
         });
   }
 
   UpdateToDoItem(ToDoItem){
-    // console.log(ToDoItem);
     this.DataSvc.UpdateToDo(ToDoItem).subscribe();
   }
 
   SetInputValue($event) {
     // this.ToDoAry.push($event);
-    let oToDo = <ItoDoModel>{};
-    // oToDo.ID = this.ToDoAry.length + 1;
+    let oToDo = <ToDoModel>{};
+    oToDo.id = this.ToDoAry.length + 1;
     oToDo.Name = $event;
     oToDo.IsCompleted = false;
+    oToDo.IsEidtMode = false;
+    oToDo.EditText = "";
 
     this.DataSvc.AddToDo(oToDo)
         .subscribe(data => {
           // this.ToDoAry = [...this.ToDoAry, data];
           this.ToDoAry = this.ToDoAry.concat(oToDo);
-          this.ToDoCount = this.ToDoAry.length;
         });
 
     // this.ToDoAry.push(oToDo);//ToDoAry 沒參考到新的記憶體(after concat)，需要變成 this.ToDoAry = this.ToDoAry.concat($event);
@@ -64,8 +62,12 @@ export class AppComponent implements OnInit  {
     this.FilterAction = $event;
   }
 
+  TestActionFuncEvent($event){
+    console.log($event);
+  }
+
   GetCallback(data) {
-    console.log(data);
+    // console.log(data);
   }
 
   ChangeAllChecked() {
@@ -80,24 +82,37 @@ export class AppComponent implements OnInit  {
         .subscribe(data => {
           // console.log(data);
           this.ToDoAry = this.ToDoAry.filter(item => item !== ToDoItem);
-          this.ToDoCount = this.ToDoAry.length;
         });
 
     // this.ToDoAry = this.ToDoAry.filter(f => f !== ToDoItem);
   }
 
   UpdateToDoItem2(){
-    let ToDoItem = <ItoDoModel>{};
+    let ToDoItem = <ToDoModel>{};
     ToDoItem.id = 4;
     ToDoItem.Name = 'test';
     ToDoItem.IsCompleted = true;
 
     this.DataSvc.UpdateToDo(ToDoItem)
     .subscribe(data => {
-      console.log(data);
+      // console.log(data);
       debugger;
     });
   }
 
+  EnterEditMode(ToDoItem: ToDoModel){
+    ToDoItem.IsEidtMode = !ToDoItem.IsEidtMode;
+    if(ToDoItem.IsEidtMode){
+      ToDoItem.EditText = ToDoItem.Name.toUpperCase();
+      // let InputID = 'EditModeInput' + ToDoItem.id;
+      // document.getElementById(InputID).focus();
+    }
+  }
 
+  EnterSaveEditMode(ToDoItem: ToDoModel){
+    ToDoItem.Name = ToDoItem.EditText;
+    ToDoItem.EditText = "";
+    ToDoItem.IsEidtMode = false;
+    this.UpdateToDoItem(ToDoItem);
+  }
 }

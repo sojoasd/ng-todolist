@@ -3,7 +3,7 @@
   <span class="todo-count" [ngStyle]="{color: IsTooMore ? 'red' : ''}"><strong>{{ ToDoAry.length }}</strong> item left</span>
   <!-- Remove this if you don't implement routing -->
   <ul class="filters">
-    <li>
+    <!-- <li>
       <a [class.selected]="FilterAction === 'All'" (click)="ChangeFilterAction('All')">All</a>
     </li>
     <li>
@@ -11,6 +11,18 @@
     </li>
     <li>
       <a [class.selected]="FilterAction === 'Completed'" (click)="ChangeFilterAction('Completed')">Completed</a>
+    </li>
+    <li>
+      <a [class.selected]="FilterAction === 'TestAction'" (click)="TestActionFunc()">TestAction</a>
+    </li> -->
+    <li>
+      <a [class.selected]="FilterAction === 'All'" (click)="ChangeFilterType('All')">All</a>
+    </li>
+    <li>
+      <a [class.selected]="FilterAction === 'Active'" (click)="ChangeFilterType('Active')">Active</a>
+    </li>
+    <li>
+      <a [class.selected]="FilterAction === 'Completed'" (click)="ChangeFilterType('Completed')">Completed</a>
     </li>
   </ul>
   <!-- Hidden if no completed items are left ↓ -->

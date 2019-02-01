@@ -27,6 +27,12 @@ export class FooterComponent implements OnInit {
   @Output()
   TriggerFilterEvent = new EventEmitter<string>();
 
+  @Output()
+  TriggerFilterChangeType = new EventEmitter<string>();
+
+  @Output()
+  TriggerTestActionEvent = new EventEmitter<ItoDoModel>();
+
   constructor() { }
 
   ngOnInit() {
@@ -44,6 +50,15 @@ export class FooterComponent implements OnInit {
   ChangeFilterAction(FilterValue){
     this.FilterAction = FilterValue;
     this.TriggerFilterEvent.emit(FilterValue);
+  }
+
+  TestActionFunc(){
+    this.TriggerTestActionEvent.emit(this._toDoAry[0]);
+  }
+
+  ChangeFilterType(FilterValue){
+    this.FilterAction = FilterValue;
+    this.TriggerFilterChangeType.emit(this.FilterAction);
   }
 
 }
